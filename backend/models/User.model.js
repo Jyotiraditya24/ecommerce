@@ -40,8 +40,6 @@ const userSchema = new mongoose.Schema(
   { timestamps: true } // createdAt & updatedAt
 );
 
-const User = mongoose.model("User", userSchema);
-
 userSchema.pre("save", async function (next) {
   if (!this.isModified("password")) {
     return next();
@@ -64,5 +62,7 @@ userSchema.methods.comparePassword = async function (password) {
     throw error;
   }
 };
+
+const User = mongoose.model("User", userSchema);
 
 export default User;
