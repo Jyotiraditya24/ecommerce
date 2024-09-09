@@ -11,7 +11,8 @@ const router = express.Router();
 
 router.get("/", protectedRoute, adminRoute, getAllProducts);
 router.get("/featured", getFeaturedProducts);
-router.post("/", protectedRoute, adminRoute, createProduct);
-router.post("/:id", protectedRoute, adminRoute, deleteProduct);
+router.get("/recommendation", getRecommendedProduct);
+router.post("/create", protectedRoute, adminRoute, createProduct);
+router.post("/delete/:id", protectedRoute, adminRoute, deleteProduct);
 
 export default router;

@@ -1,3 +1,4 @@
+import mongoose from "mongoose";
 import cloudinary from "../lib/cloudinary.js";
 import { redis } from "../lib/redis.js";
 import Product from "../models/Product.model.js";
@@ -58,7 +59,7 @@ export const createProduct = async (req, resp) => {
   }
 };
 
-export const deleteProduct = (req, resp) => {
+export const deleteProduct = async (req, resp) => {
   try {
     const { id: productId } = req.params;
     const product = Product.findById(productId);
@@ -74,6 +75,34 @@ export const deleteProduct = (req, resp) => {
         console.log("Error deleting image from cloudinary");
       }
     }
-    
-  } catch (error) {}
+    await Product.findByIdAndDelete(productId);
+    resp.status(200).json({ message: "Product deleted successfully" });
+  } catch (error) {
+    console.log("Error in deleteProduct", error.message);
+    resp.status(500).json({ message: "Server error", error: error.message });
+  }
+};
+
+export const getRecommendedProduct = async (req, resp) => {
+  try {
+    const product = await Product.aggregate([
+      {
+        $sample: { size: 3 },
+      },
+      {
+        $project: {
+          _id: 1,
+          name: 1,
+          description: 1,
+          image: 1,
+          price: 1,
+        },
+      },
+    ]);
+
+    resp.status(200).json({ product });
+  } catch (error) {
+    console.log("Error in getRecommendedProduct", error.message);
+    resp.status(500).json({ message: "Server error", error: error.message });
+  }
 };
