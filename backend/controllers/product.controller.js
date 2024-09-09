@@ -106,3 +106,40 @@ export const getRecommendedProduct = async (req, resp) => {
     resp.status(500).json({ message: "Server error", error: error.message });
   }
 };
+
+export const getCatergoryProducts = async (req, resp) => {
+  const { category } = req.params.category;
+  try {
+    const products = await Product.find({ category });
+    resp.status(200).json({ products });
+  } catch (error) {
+    console.log("Error in getCatergoryProducts", error.message);
+    resp.status(500).json({ message: "Server error", error: error.message });
+  }
+};
+
+export const toggleFeature = async (req, resp) => {
+  const { productId } = req.params.id;
+  try {
+    const product = await Product.findById(productId);
+    if (!product) {
+      return resp.status(404).json({ message: "Product not found" });
+    }
+    product.isFeatured = !product.isFeatured;
+    await product.save();
+    await updateFeaturedProductInRedis();
+    return resp.status(200).json({ message: "Product updated successfully" });
+  } catch (error) {
+    console.log("Error in toggleFeature", error.message);
+    resp.status(500).json({ message: "Server error", error: error.message });
+  }
+};
+
+async function updateFeaturedProductInRedis() {
+  try {
+    const featuredProducts = await Product.find({ isFeatured: true }).lean();
+    await redis.set("featured_products", JSON.stringify(featuredProducts));
+  } catch (error) {
+    console.log("error in update cache function", error.message);
+  }
+}
