@@ -5,19 +5,19 @@ const userSchema = new mongoose.Schema(
   {
     name: {
       type: String,
-      required: ["true", "Name is required"],
+      required: [true, "Name is required"], // corrected the "true"
     },
     email: {
       type: String,
-      required: ["true", "Email is required"],
-      unique: "true",
+      required: [true, "Email is required"], // corrected the "true"
+      unique: true, // removed quotes from "true"
       lowercase: true,
       trim: true,
     },
     password: {
       type: String,
-      required: ["true", "Password is required"],
-      minlength: [6, "Password must be at least 6 character long"],
+      required: [true, "Password is required"], // corrected the "true"
+      minlength: [6, "Password must be at least 6 characters long"],
     },
     cartItems: [
       {
@@ -50,13 +50,13 @@ userSchema.pre("save", async function (next) {
     this.password = hashedPassword;
     return next();
   } catch (error) {
-    return next(error);
+    return next(error); // Keep this for error handling
   }
 });
 
 userSchema.methods.comparePassword = async function (password) {
   try {
-    return bcrypt.compare(password, this.password);
+    return await bcrypt.compare(password, this.password);
   } catch (error) {
     console.log("Error comparing passwords", error.message);
     throw error;

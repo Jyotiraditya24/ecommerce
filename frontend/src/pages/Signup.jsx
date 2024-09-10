@@ -6,8 +6,11 @@ import { MdOutlineEmail } from "react-icons/md";
 import { RiLockPasswordLine } from "react-icons/ri";
 import backgroundImage from "../icons/background.jpg";
 import toast, { Toaster } from "react-hot-toast";
+import { useUserStore } from "../stores/useUserStore";
 
 const Signup = () => {
+  const { signup } = useUserStore();
+
   const [formData, setFormData] = useState({
     name: "",
     email: "",
@@ -25,10 +28,7 @@ const Signup = () => {
 
   const handleSubmit = (e) => {
     e.preventDefault();
-    if (confirmPassword !== confirmPassword) {
-      toast("GAANDU");
-    }
-    console.log(formData);
+    signup(formData);
   };
   return (
     <div className="min-h-screen bg-[rgb(97,170,156)] flex flex-row justify-center items-center">
@@ -114,7 +114,7 @@ const Signup = () => {
                   value={formData.confirmPassword}
                   onChange={hanldeChange}
                 />
-                <MdOutlineEmail className="absolute right-4 bottom-2.5 h-5 w-5" />
+                <RiLockPasswordLine className="absolute right-4 bottom-2.5 h-5 w-5" />
               </div>
               <div>
                 <button className="w-full bg-[rgb(12,73,62)] text-white rounded-xl px-4 py-2">
