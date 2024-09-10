@@ -7,9 +7,10 @@ import { RiLockPasswordLine } from "react-icons/ri";
 import backgroundImage from "../icons/background.jpg";
 import toast, { Toaster } from "react-hot-toast";
 import { useUserStore } from "../stores/useUserStore";
+import { Loader } from "lucide-react";
 
 const Signup = () => {
-  const { signup } = useUserStore();
+  const { signup, loading } = useUserStore();
 
   const [formData, setFormData] = useState({
     name: "",
@@ -17,7 +18,6 @@ const Signup = () => {
     password: "",
     confirmPassword: "",
   });
-  const loading = false;
 
   const hanldeChange = (e) => {
     setFormData((prev) => ({
@@ -117,8 +117,8 @@ const Signup = () => {
                 <RiLockPasswordLine className="absolute right-4 bottom-2.5 h-5 w-5" />
               </div>
               <div>
-                <button className="w-full bg-[rgb(12,73,62)] text-white rounded-xl px-4 py-2">
-                  Sign Up
+                <button className="w-full bg-[rgb(12,73,62)] text-white rounded-xl px-4 py-2 ">
+                  {loading ? <Loader className="mx-auto" /> : "Sign Up"}
                 </button>
               </div>
             </form>

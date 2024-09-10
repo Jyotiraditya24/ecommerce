@@ -5,14 +5,14 @@ import { PiFinnTheHuman } from "react-icons/pi";
 import { MdOutlineEmail } from "react-icons/md";
 import { RiLockPasswordLine } from "react-icons/ri";
 import backgroundImage from "../icons/background.jpg";
-import toast, { Toaster } from "react-hot-toast";
+import { useUserStore } from "../stores/useUserStore";
 
 const Login = () => {
   const [formData, setFormData] = useState({
     email: "",
     password: "",
   });
-  const loading = false;
+  const { login, loading } = useUserStore();
 
   const hanldeChange = (e) => {
     setFormData((prev) => ({
@@ -23,10 +23,7 @@ const Login = () => {
 
   const handleSubmit = (e) => {
     e.preventDefault();
-    if (confirmPassword !== confirmPassword) {
-      toast("GAANDU");
-    }
-    console.log(formData);
+    login(formData);
   };
   return (
     <div className="min-h-screen bg-[rgb(97,170,156)] flex flex-row justify-center items-center">
