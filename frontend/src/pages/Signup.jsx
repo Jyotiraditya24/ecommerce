@@ -1,12 +1,35 @@
-import React from "react";
+import React, { useState } from "react";
 import ecommerceicon from "../icons/ecommerceLogo.png";
 import { Link } from "react-router-dom";
 import { PiFinnTheHuman } from "react-icons/pi";
 import { MdOutlineEmail } from "react-icons/md";
 import { RiLockPasswordLine } from "react-icons/ri";
 import backgroundImage from "../icons/background.jpg";
+import toast, { Toaster } from "react-hot-toast";
 
 const Signup = () => {
+  const [formData, setFormData] = useState({
+    name: "",
+    email: "",
+    password: "",
+    confirmPassword: "",
+  });
+  const loading = false;
+
+  const hanldeChange = (e) => {
+    setFormData((prev) => ({
+      ...prev,
+      [e.target.name]: e.target.value,
+    }));
+  };
+
+  const handleSubmit = (e) => {
+    e.preventDefault();
+    if (confirmPassword !== confirmPassword) {
+      toast("GAANDU");
+    }
+    console.log(formData);
+  };
   return (
     <div className="min-h-screen bg-[rgb(97,170,156)] flex flex-row justify-center items-center">
       <div className="min-w-[720px] bg-white grid grid-cols-6 rounded-lg p-2">
@@ -27,12 +50,12 @@ const Signup = () => {
                   Already have an account?
                 </span>
                 <span>
-                  <Link to="/signin">Sign in</Link>
+                  <Link to="/login">Sign in</Link>
                 </span>
               </div>
             </div>
 
-            <form className="flex flex-col gap-y-10">
+            <form className="flex flex-col gap-y-10" onSubmit={handleSubmit}>
               <div className="border border-gray-300 rounded-lg relative">
                 <label htmlFor="name" className="absolute bottom-10 left-2">
                   Full Name
@@ -42,6 +65,9 @@ const Signup = () => {
                   placeholder="Enter your name"
                   className="pl-2 pr-4 py-2 w-full"
                   id="name"
+                  value={formData.name}
+                  onChange={hanldeChange}
+                  name="name"
                 />
                 <PiFinnTheHuman className="absolute right-4 bottom-2.5 h-5 w-5" />
               </div>
@@ -54,6 +80,9 @@ const Signup = () => {
                   placeholder="Enter your email"
                   className="pl-2 pr-4 py-2 w-full"
                   id="email"
+                  value={formData.email}
+                  onChange={hanldeChange}
+                  name="email"
                 />
                 <MdOutlineEmail className="absolute right-4 bottom-2.5 h-5 w-5" />
               </div>
@@ -66,24 +95,30 @@ const Signup = () => {
                   placeholder="Enter your password"
                   className="pl-2 pr-4 py-2 w-full"
                   id="password"
+                  name="password"
+                  value={formData.password}
+                  onChange={hanldeChange}
                 />
                 <RiLockPasswordLine className="absolute right-4 bottom-2.5 h-5 w-5" />
               </div>
               <div className="border border-gray-300 rounded-lg relative">
                 <label htmlFor="email" className="absolute bottom-10 left-2">
-                  Email
+                  Confirm Password
                 </label>
                 <input
-                  type="email"
+                  type="passowrd"
                   placeholder="Enter your email"
                   className="pl-2 pr-4 py-2 w-full"
-                  id="email"
+                  id="confirmPassword"
+                  name="confirmPassword"
+                  value={formData.confirmPassword}
+                  onChange={hanldeChange}
                 />
                 <MdOutlineEmail className="absolute right-4 bottom-2.5 h-5 w-5" />
               </div>
               <div>
                 <button className="w-full bg-[rgb(12,73,62)] text-white rounded-xl px-4 py-2">
-                  Login
+                  Sign Up
                 </button>
               </div>
             </form>
