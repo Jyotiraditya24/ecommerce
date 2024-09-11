@@ -134,7 +134,7 @@ export const refreshToken = async (req, resp) => {
       { userId: decoded.userId },
       process.env.ACCESS_TOKEN_SECRET,
       { expiresIn: "15m" }
-    );
+    ); 
     resp.cookie("accessToken", accessToken, {
       httpOnly: true,
       secure: process.env.NODE_ENV === "production",

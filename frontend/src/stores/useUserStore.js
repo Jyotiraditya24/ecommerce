@@ -20,7 +20,7 @@ export const useUserStore = create((set, get) => ({
         email,
         password,
       });
-      console.log(res);
+      console.log("In store response In Sign up", res.data.user);
       set({ user: res.data.user, loading: false });
       toast.success("Sign up successful!"); // Optional: success message
     } catch (error) {
@@ -39,6 +39,7 @@ export const useUserStore = create((set, get) => ({
         email,
         password,
       });
+      console.log("In store response In Log In", res.data.user);
       set({ user: res.data.user, loading: false });
       toast.success("Login successful!");
     } catch (error) {
@@ -46,6 +47,15 @@ export const useUserStore = create((set, get) => ({
         error.response?.data?.message || "An error occurred during signup.";
       toast.error(errorMessage);
       set({ loading: false });
+    }
+  },
+
+  checkAuth: async (email, password) => {
+    set({ checkingAuth: true });
+    try{
+
+    }catch(error){
+
     }
   },
 }));

@@ -107,7 +107,7 @@ const Signup = () => {
                 </label>
                 <input
                   type="passowrd"
-                  placeholder="Enter your email"
+                  placeholder="Enter your password"
                   className="pl-2 pr-4 py-2 w-full"
                   id="confirmPassword"
                   name="confirmPassword"
