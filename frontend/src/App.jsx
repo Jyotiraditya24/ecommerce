@@ -1,4 +1,4 @@
-import { Navigate, Route, Routes } from "react-router-dom";
+import { Navigate, Route, Routes, useLocation } from "react-router-dom";
 import Home from "./pages/Home";
 import Signup from "./pages/Signup";
 import Login from "./pages/Login";
@@ -9,15 +9,18 @@ import { useEffect } from "react";
 import LoadingSpinner from "./pages/components/LoadingSpinner";
 function App() {
   const { user, checkAuth, checkingAuth } = useUserStore();
+  const location = useLocation();
 
   useEffect(() => {
-    checkAuth(); 
+    checkAuth();
   }, [checkAuth]);
 
   if (checkingAuth) return <LoadingSpinner />;
+
+  const hiddenNavBarRoutes = ["/signup", "/login"];
   return (
     <div className="bg-gray-200 min-h-screen">
-      <NavBar />
+      {!hiddenNavBarRoutes.includes(location.pathname) && <NavBar />}
       <Routes>
         <Route path="/" element={<Home />} />
         <Route path="/signup" element={<Signup />} />

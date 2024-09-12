@@ -7,6 +7,7 @@ export const useUserStore = create((set, get) => ({
   loading: false,
   checkingAuth: true,
 
+
   signup: async ({ name, email, password, confirmPassword }) => {
     set({ loading: true });
 
@@ -63,7 +64,7 @@ export const useUserStore = create((set, get) => ({
   logout: async () => {
     set({ loading: true });
     try {
-      const response = await axios.get("/auth/logout");
+      const response = await axios.post("/auth/logout");
       set({ user: null });
     } catch (error) {
       toast.error(error.response?.data?.message || "An Error Occured in the Logout");
