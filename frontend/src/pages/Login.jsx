@@ -25,6 +25,7 @@ const Login = () => {
     e.preventDefault();
     login(formData);
   };
+
   return (
     <div className="min-h-screen bg-[rgb(97,170,156)] flex flex-row justify-center items-center">
       <div className="min-w-[720px] bg-white grid grid-cols-6 rounded-lg p-2">

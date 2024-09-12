@@ -50,12 +50,23 @@ export const useUserStore = create((set, get) => ({
     }
   },
 
-  checkAuth: async (email, password) => {
+  checkAuth: async () => {
     set({ checkingAuth: true });
-    try{
+    try {
+      const response = await axios.get("/auth/profile");
+      set({ user: response.data, checkingAuth: false });
+    } catch (error) {
+      set({ checkingAuth: false, user: null });
+    }
+  },
 
-    }catch(error){
-
+  logout: async () => {
+    set({ loading: true });
+    try {
+      const response = await axios.get("/auth/logout");
+      set({ user: null });
+    } catch (error) {
+      toast.error(error.response?.data?.message || "An Error Occured in the Logout");
     }
   },
 }));
