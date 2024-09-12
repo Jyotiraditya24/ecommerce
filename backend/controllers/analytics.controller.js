@@ -1,27 +1,28 @@
-import Order from "../models/Order.model";
-import Product from "../models/Product.model";
-import User from "../models/user.model";
+import Order from "../models/Order.model.js";
+import Product from "../models/Product.model.js";
+import User from "../models/user.model.js";
 
 export const getAnalyticsData = async (req, resp) => {
   try {
     const data = await getDataforAnalytics();
-  } catch (error) {}
+    const graphData = await getGraphData();
+    resp.status(200).json({ data, graphData });
+  } catch (error) {
+    console.error("Error fetching analytics data:", error);
+    resp.status(500).json({ error: "Error fetching analytics data" });
+  }
 };
 
 const getDataforAnalytics = async () => {
-  const totalUser = await User.countDocuments(); // tell how many users are there
-  const totalProducts = await Product.countDocuments(); // tell how many products are there
+  const totalUser = await User.countDocuments();
+  const totalProducts = await Product.countDocuments();
 
   const salesData = await Order.aggregate([
     {
       $group: {
-        _id: null, // now all the data is grouped
-        totalSales: {
-          $sum: 1,
-        }, // counts number of order
-        totalRevenue: {
-          $sum: "$totalAmount",
-        },
+        _id: null,
+        totalSales: { $sum: 1 },
+        totalRevenue: { $sum: "$totalAmount" },
       },
     },
   ]);
@@ -30,6 +31,7 @@ const getDataforAnalytics = async () => {
     totalSales: 0,
     totalRevenue: 0,
   };
+
   return {
     user: totalUser,
     products: totalProducts,
@@ -41,8 +43,8 @@ const getDataforAnalytics = async () => {
 const getGraphData = async () => {
   const endDate = new Date();
   const startDate = new Date(endDate.getTime() - 7 * 24 * 60 * 60 * 1000);
-
   const dailySalesData = await getDailySalesData(startDate, endDate);
+  return dailySalesData;
 };
 
 const getDailySalesData = async (startDate, endDate) => {
@@ -58,28 +60,36 @@ const getDailySalesData = async (startDate, endDate) => {
     {
       $group: {
         _id: {
-          // coverting the time hours seconds only to date
           $dateToString: {
             format: "%Y-%m-%d",
             date: "$createdAt",
           },
         },
-        sales: {
-          $sum: 1,
-        },
-        revenue: {
-          $sum: "$totalAmount",
-        },
+        sales: { $sum: 1 },
+        revenue: { $sum: "$totalAmount" },
       },
     },
   ]);
-  /* output 
-  [
-    {
-        _id: "2024-05-10",
-        sales: 10,
-        revenue: 1000.23
-    }
-  ]
-  */
+
+  const dateArray = getDatesInRange(startDate, endDate);
+
+  return dateArray.map((date) => {
+    const foundData = dailySalesData.find((item) => item._id === date);
+    return {
+      date,
+      sales: foundData?.sales || 0,
+      revenue: foundData?.revenue || 0,
+    };
+  });
+};
+
+const getDatesInRange = (startDate, endDate) => {
+  const dates = [];
+  let currentDate = new Date(startDate);
+
+  while (currentDate <= endDate) {
+    dates.push(currentDate.toISOString().split("T")[0]); // Ensuring date formatting
+    currentDate.setDate(currentDate.getDate() + 1);
+  }
+  return dates;
 };

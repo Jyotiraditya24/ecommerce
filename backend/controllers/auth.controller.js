@@ -134,7 +134,7 @@ export const refreshToken = async (req, resp) => {
       { userId: decoded.userId },
       process.env.ACCESS_TOKEN_SECRET,
       { expiresIn: "15m" }
-    ); 
+    );
     resp.cookie("accessToken", accessToken, {
       httpOnly: true,
       secure: process.env.NODE_ENV === "production",
@@ -144,6 +144,15 @@ export const refreshToken = async (req, resp) => {
     resp.json({ message: "Token refershed Successfully" });
   } catch (error) {
     console.log("Error in refresh Token controller", error.message);
+    resp.status(500).json({ message: "Server error", error: error.message });
+  }
+};
+
+export const getProfile = (req, resp) => {
+  try {
+    resp.status(200).json(req.user);
+  } catch (error) {
+    console.log("Error in get profile controller", error.message);
     resp.status(500).json({ message: "Server error", error: error.message });
   }
 };
