@@ -10,9 +10,9 @@ export const getCoupon = async (req, resp) => {
     console.log("Error in getCoupon controller", error.message);
     resp.status(500).json({ error: error.message });
   }
-};
+}; 
 
-export const validateCoupon = async (req, resp) => {
+ export const validateCoupon = async (req, resp) => {
   try {
     const { code } = req.body;
     const coupon = await Coupon.findOne({
