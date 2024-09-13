@@ -21,4 +21,29 @@ export const useProductStore = create((set, get) => ({
       set({ loading: false });
     }
   },
+  fetchAllProducts: async () => {
+    set({ loading: true });
+    try {
+      const response = await axios.get("/product");
+      set({ products: response.data.products, loading: false });
+    } catch (error) {
+      toast.error(error.response.data.message);
+      set({ loading: false });
+    }
+  },
+  deleteProduct: async (productId) => {
+    set({ loading: true });
+    await axios.post(`/product/delete/${productId}`);
+    set((state) => ({
+      products: state.products.filter((product) => product._id !== productId),
+    }));
+  },
+  toggleFeaturedProduct: async (productId) => {
+    set({ loading: true });
+    try {
+      
+    } catch (error) {
+      
+    }
+  }
 }));

@@ -85,7 +85,7 @@ const NavBar = () => {
             </div>
 
             {isAdmin === "admin" && (
-              <div className="flex flex-row items-center gap-x-3 border px-2 py-1 rounded-xl">
+              <div className="flex flex-row items-center gap-x-3 border px-4 py-1 rounded-xl">
                 <h1>DashBoard</h1>
                 <LayoutDashboard className="h-6 w-6" />
               </div>
