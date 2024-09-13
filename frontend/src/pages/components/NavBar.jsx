@@ -13,6 +13,7 @@ const NavBar = () => {
   const { user, logout } = useUserStore();
   const isAdmin = user?.role;
   const [isMiniPopUp, setIsMiniPopUp] = useState(false);
+  const [isDashBoardPopUp, setIsDashBoardPopUp] = useState(false);
 
   const handleLogout = () => {
     logout();
