@@ -36,6 +36,7 @@ export const useProductStore = create((set, get) => ({
     await axios.post(`/product/delete/${productId}`);
     set((state) => ({
       products: state.products.filter((product) => product._id !== productId),
+      loading: false,
     }));
   },
   toggleFeaturedProduct: async (productId) => {
