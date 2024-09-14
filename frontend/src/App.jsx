@@ -2,6 +2,7 @@ import { Navigate, Route, Routes, useLocation } from "react-router-dom";
 import Home from "./pages/Home";
 import Signup from "./pages/Signup";
 import Login from "./pages/Login";
+import Category from "./pages/Category";
 import NavBar from "./pages/components/NavBar";
 import { Toaster } from "react-hot-toast";
 import { useUserStore } from "./stores/useUserStore";
@@ -33,6 +34,7 @@ function App() {
           path="/admin/dashboard"
           element={user?.role === "admin" ? <AdminPage /> : <Navigate to="/" />}
         />
+        <Route path="/category/:category" element={<Category />} />
       </Routes>
       <Toaster />
     </div>

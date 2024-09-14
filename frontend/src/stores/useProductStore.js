@@ -55,4 +55,25 @@ export const useProductStore = create((set, get) => ({
       }));
     } catch (error) {}
   },
+  fetchProductsByCategory: async (category) => {
+    set({ loading: true });
+    try {
+      const response = await axios.get(`/product/category/${category}`);
+      set({ products: response.data.products, loading: false });
+    } catch (error) {
+      toast.error(error.response.data.message);
+      set({ loading: false });
+    }
+  },
+  // fetchFeaturedProducts: async ()=>{
+  //   set({ loading: true });
+  //   try {
+  //     const response = await axios.get(`/product/featured`);
+  //     conosle.log(response);
+  //     // set({ products: response.data.products, loading: false });
+  //   } catch (error) {
+  //     toast.error(error.response?.data?.message);
+  //     set({ loading: false });
+  //   }
+  // }
 }));

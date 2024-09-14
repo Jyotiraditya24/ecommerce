@@ -108,7 +108,7 @@ export const getRecommendedProduct = async (req, resp) => {
 };
 
 export const getCatergoryProducts = async (req, resp) => {
-  const { category } = req.params.category;
+  const { category } = req.params;
   try {
     const products = await Product.find({ category });
     resp.status(200).json({ products });
