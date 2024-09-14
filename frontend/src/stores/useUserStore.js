@@ -7,7 +7,6 @@ export const useUserStore = create((set, get) => ({
   loading: false,
   checkingAuth: true,
 
-
   signup: async ({ name, email, password, confirmPassword }) => {
     set({ loading: true });
 
@@ -55,6 +54,7 @@ export const useUserStore = create((set, get) => ({
     set({ checkingAuth: true });
     try {
       const response = await axios.get("/auth/profile");
+      console.log(response.data);
       set({ user: response.data, checkingAuth: false });
     } catch (error) {
       set({ checkingAuth: false, user: null });
@@ -67,7 +67,9 @@ export const useUserStore = create((set, get) => ({
       const response = await axios.post("/auth/logout");
       set({ user: null });
     } catch (error) {
-      toast.error(error.response?.data?.message || "An Error Occured in the Logout");
+      toast.error(
+        error.response?.data?.message || "An Error Occured in the Logout"
+      );
     }
   },
 }));

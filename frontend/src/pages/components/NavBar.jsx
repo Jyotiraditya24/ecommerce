@@ -19,12 +19,6 @@ const NavBar = () => {
     logout();
   };
 
-  useEffect(() => {
-    if (!user) {
-      navigate("/login");
-    }
-  }, [user, navigate]);
-
   const handleMiniPopUp = () => {
     setIsMiniPopUp(!isMiniPopUp);
   };
