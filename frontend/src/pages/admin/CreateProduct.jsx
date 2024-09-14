@@ -24,10 +24,10 @@ const CreateProduct = () => {
     }
   };
 
-   const handleChange = (e) => {
-     const { name, value } = e.target;
-     setNewProduct({ ...newProduct, [name]: value });
-   };
+  const handleChange = (e) => {
+    const { name, value } = e.target;
+    setNewProduct({ ...newProduct, [name]: value });
+  };
 
   const handleSubmit = async (e) => {
     e.preventDefault();
@@ -114,9 +114,11 @@ const CreateProduct = () => {
             className="w-full px-4 py-2 border border-gray-300 rounded-lg focus:ring focus:ring-blue-200 focus:outline-none"
           >
             <option value="">Select category</option>
-            <option value="Electronics">Electronics</option>
-            <option value="Clothing">Clothing</option>
-            <option value="Furniture">Furniture</option>
+            <option value="t-shirt">T-Shirt</option>
+            <option value="jeans">Jeans</option>
+            <option value="shoes">shoes</option>
+            <option value="glasses">glasses</option>
+            <option value="bags">bags</option>
             {/* Add more categories here */}
           </select>
         </div>
