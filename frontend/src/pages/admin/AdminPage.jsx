@@ -1,4 +1,4 @@
-import React, { useState } from "react";
+import React, { useEffect, useState } from "react";
 import { useProductStore } from "../../stores/useProductStore";
 import { BarChart, PlusCircle, ShoppingBasket } from "lucide-react";
 import CreateProduct from "./CreateProduct";
@@ -7,18 +7,20 @@ import ProductList from "../components/ProductList";
 const AdminPage = () => {
   const [activeTab, setActiveTab] = useState("create");
 
-  const { createProduct } = useProductStore();
-
-  const handleChange = (e) => {
-    const { name, value } = e.target;
-    setNewProduct({ ...newProduct, [name]: value });
-  };
+  const { fetchAllProducts } = useProductStore();
 
   const tabs = [
     { id: "create", label: "Create Product", icon: PlusCircle },
     { id: "products", label: "Products", icon: ShoppingBasket },
     { id: "analytics", label: "Analytics", icon: BarChart },
   ];
+
+  useEffect(() => {
+    async function prod() {
+      await fetchAllProducts();
+    }
+    prod();
+  }, []);
 
   return (
     <div className="min-h-screen flex flex-col w-full items-center max-w-6xl mx-auto gap-y-4">

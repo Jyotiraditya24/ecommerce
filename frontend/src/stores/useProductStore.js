@@ -41,9 +41,17 @@ export const useProductStore = create((set, get) => ({
   toggleFeaturedProduct: async (productId) => {
     set({ loading: true });
     try {
-      
-    } catch (error) {
-      
-    }
-  }
+      const response = await axios.patch(`/product/update/${productId}`);
+      console.log(response.data.updatedProduct);
+      set((state) => ({
+        products: state.products.map((product) => {
+          if (response.data.updatedProduct._id === product._id) {
+            product = response.data.updatedProduct;
+          }
+          return product;
+        }),
+        loading: false,
+      }));
+    } catch (error) {}
+  },
 }));

@@ -119,16 +119,24 @@ export const getCatergoryProducts = async (req, resp) => {
 };
 
 export const toggleFeature = async (req, resp) => {
-  const { productId } = req.params.id;
+  const { id: productId } = req.params;
+
   try {
     const product = await Product.findById(productId);
     if (!product) {
       return resp.status(404).json({ message: "Product not found" });
     }
+
     product.isFeatured = !product.isFeatured;
-    await product.save();
-    await updateFeaturedProductInRedis();
-    return resp.status(200).json({ message: "Product updated successfully" });
+    const updatedProduct = await product.save();
+
+    try {
+      await updateFeaturedProductInRedis();
+    } catch (redisError) {
+      console.log("Error updating Redis cache", redisError.message);
+    }
+
+    return resp.status(200).json({ updatedProduct, message: "Product updated successfully" });
   } catch (error) {
     console.log("Error in toggleFeature", error.message);
     resp.status(500).json({ message: "Server error", error: error.message });
