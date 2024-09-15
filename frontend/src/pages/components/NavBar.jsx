@@ -25,15 +25,15 @@ const NavBar = () => {
 
   useEffect(() => {
     getCartItems();
-  }, []); 
+  }, []);
 
   return (
     <div>
       <nav className="py-2">
         <div className="bg-white max-w-[1260px] mx-auto rounded-2xl px-4 py-2 flex flex-row justify-between items-center gap-x-10">
-          <div className="font-medium text-xl basis-1/4">
+          <Link to="/" className="font-medium text-xl basis-1/4">
             <h1>ShopFetti</h1>
-          </div>
+          </Link>
           <div className="flex flex-row border border-gray-300 rounded-lg w-full items-center pl-2 basis-1/2">
             <Search className="w-6 h-6 pr-1" />
             <input
