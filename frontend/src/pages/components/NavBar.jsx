@@ -7,13 +7,13 @@ import {
 } from "lucide-react";
 import { useUserStore } from "../../stores/useUserStore";
 import { useNavigate, Link } from "react-router-dom";
+import { useCartStore } from "../../stores/useCartStore";
 
 const NavBar = () => {
-  const navigate = useNavigate();
   const { user, logout } = useUserStore();
   const isAdmin = user?.role;
   const [isMiniPopUp, setIsMiniPopUp] = useState(false);
-  const [isDashBoardPopUp, setIsDashBoardPopUp] = useState(false);
+  const { cart, getCartItems } = useCartStore();
 
   const handleLogout = () => {
     logout();
@@ -22,6 +22,10 @@ const NavBar = () => {
   const handleMiniPopUp = () => {
     setIsMiniPopUp(!isMiniPopUp);
   };
+
+  useEffect(() => {
+    getCartItems();
+  }, []); 
 
   return (
     <div>
@@ -39,7 +43,17 @@ const NavBar = () => {
             />
           </div>
           <div className="flex flex-row justify-end gap-x-10 items-center basis-1/4">
-            {user && <ShoppingCart className="h-6 w-6" />}
+            {user && (
+              <Link to="/cart" className="relative">
+                {/* Cart Icon with Improved Styling */}
+                <ShoppingCart className="h-6 w-6 cursor-pointer" />
+                {cart.length > 0 && (
+                  <div className="absolute -top-2 -right-2 bg-red-500 text-white rounded-full w-5 h-5 flex items-center justify-center text-xs">
+                    {cart.length}
+                  </div>
+                )}
+              </Link>
+            )}
             <div className="relative">
               <CircleUser
                 className="h-6 w-6 cursor-pointer transition-transform transform hover:scale-110"

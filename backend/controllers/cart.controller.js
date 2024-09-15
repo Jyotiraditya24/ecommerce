@@ -59,10 +59,12 @@ export const updateQuantity = async (req, resp) => {
     const { id: productId } = req.params;
     const { quantity } = req.body;
     const user = req.user;
-
+    console.log("Quantity", quantity);
     const exisitingItem = user.cartItems.find(
       (item) => item.product.toString() === productId
     );
+    console.log(exisitingItem);
+
     if (exisitingItem) {
       if (quantity === 0) {
         user.cartItems = user.cartItems.filter(
@@ -71,13 +73,13 @@ export const updateQuantity = async (req, resp) => {
         await user.save();
         return resp
           .status(200)
-          .json({ message: "Item quantity updated", cart: user.cartItems });
+          .json({ message: "Item quantity updated", cart: user});
       }
       exisitingItem.quantity = quantity;
       await user.save();
       return resp
         .status(200)
-        .json({ message: "Item quantity updated", cart: user.cartItems });
+        .json({ message: "Item quantity updated", cart: user });
     } else {
       resp.status(404).json({ message: "Product not found in cart" });
     }

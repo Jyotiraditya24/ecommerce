@@ -4,11 +4,13 @@ import Signup from "./pages/Signup";
 import Login from "./pages/Login";
 import Category from "./pages/Category";
 import NavBar from "./pages/components/NavBar";
+import Cart from "./pages/Cart";
 import { Toaster } from "react-hot-toast";
 import { useUserStore } from "./stores/useUserStore";
 import { useEffect } from "react";
 import LoadingSpinner from "./pages/components/LoadingSpinner";
 import AdminPage from "./pages/admin/AdminPage";
+
 function App() {
   const { user, checkAuth, checkingAuth } = useUserStore();
   const location = useLocation();
@@ -35,6 +37,10 @@ function App() {
           element={user?.role === "admin" ? <AdminPage /> : <Navigate to="/" />}
         />
         <Route path="/category/:category" element={<Category />} />
+        <Route
+          path="/cart"
+          element={user ? <Cart /> : <Navigate to="/login" />}
+        />
       </Routes>
       <Toaster />
     </div>
