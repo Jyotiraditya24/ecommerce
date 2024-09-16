@@ -20,13 +20,13 @@ const OrderSummary = () => {
     const stripe = await stripeProimse;
     const response = await axios.post("/payments/create-checkout-session", {
       products: cart,
-      coupon: coupon ? coupon.code : null,
+      couponCode: coupon ? coupon.code : null,
     });
 
     const session = response.data;
     const result = stripe.redirectToCheckout({ sessionId: session.id });
     console.log(session);
-    if(result.error) {
+    if (result.error) {
       console.log(result.error.message);
     }
   };
@@ -49,7 +49,7 @@ const OrderSummary = () => {
               ${formattedSubTotal}
             </div>
           </div>
-          {savings > 0 && (
+          {savings < 0 && (
             <dl className="flex items-center justify-between gap-4">
               <dt className="text-base font-normal text-gray-500">Savings</dt>
               <dd className="text-base font-medium text-emerald-400">
@@ -63,7 +63,7 @@ const OrderSummary = () => {
                 Coupon ({coupon.code})
               </dt>
               <dd className="text-base font-medium text-emerald-400">
-                -{coupon.discountPercentage}%
+                -{coupon.discount}%
               </dd>
             </dl>
           )}
