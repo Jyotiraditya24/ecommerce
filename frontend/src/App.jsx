@@ -10,6 +10,8 @@ import { useUserStore } from "./stores/useUserStore";
 import { useEffect } from "react";
 import LoadingSpinner from "./pages/components/LoadingSpinner";
 import AdminPage from "./pages/admin/AdminPage";
+import PurchaseSuccess from "./pages/PurchaseSuccess";
+import PurchaseCancelPage from "./pages/PurchaseCancel";
 
 function App() {
   const { user, checkAuth, checkingAuth } = useUserStore();
@@ -40,6 +42,15 @@ function App() {
         <Route
           path="/cart"
           element={user ? <Cart /> : <Navigate to="/login" />}
+        />
+        <Route
+          path="/purchase-success"
+          element={user ? <PurchaseSuccess /> : <Navigate to="/login" />}
+        />
+
+        <Route
+          path="/purchase-cancel"
+          element={user ? <PurchaseCancelPage /> : <Navigate to="/login" />}
         />
       </Routes>
       <Toaster />

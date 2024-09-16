@@ -11,7 +11,7 @@ const Category = () => {
     fetchProductsByCategory(category);
   }, [category]);
 
-  console.log(products);
+      console.log("PRODUCTS", products);
   return (
     <div className="min-h-screen">
       <div className="relative z-10 max-w-screen-xl mx-auto px-4 sm:px-6 lg:px-8 py-16">

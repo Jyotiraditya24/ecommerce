@@ -3,7 +3,7 @@ import axios from "../lib/axios";
 import toast from "react-hot-toast";
 
 export const useCartStore = create((set, get) => ({
-  cart: [],
+  cart: [{ product: {}, quantity: 0 }],
   coupon: null,
   total: 0,
   subTotal: 0,
@@ -20,6 +20,8 @@ export const useCartStore = create((set, get) => ({
     get().calculateTotals();
   },
   addToCart: async (product) => {
+    console.log(product);
+    console.log(get().cart);
     try {
       const response = await axios.post(`/cart/add`, {
         productId: product._id,
@@ -27,12 +29,12 @@ export const useCartStore = create((set, get) => ({
       toast.success("Added to cart");
       set((prevState) => {
         const existingItem = prevState.cart.find(
-          (item) => item.product._id === product._id
+          (item) => item?.product?._id === product?._id
         );
         const newCart = existingItem
           ? prevState.cart.map((item) =>
-              item.product._id === product._id
-                ? { ...item, quantity: item.quantity + 1 }
+              item.product?._id === product?._id
+                ? { ...item, quantity: item?.quantity + 1 }
                 : item
             )
           : [...prevState.cart, { ...product, quantity: 1 }];
@@ -47,7 +49,7 @@ export const useCartStore = create((set, get) => ({
   calculateTotals: () => {
     const { cart, coupon } = get();
     const subTotal = cart.reduce(
-      (sum, item) => sum + item.quantity * item.product.price,
+      (sum, item) => sum + item.quantity * item.product?.price,
       0
     );
     let total = subTotal;
@@ -77,5 +79,8 @@ export const useCartStore = create((set, get) => ({
       cart: prevState.cart.filter((item) => item.product._id !== productId),
     }));
     get().calculateTotals();
+  },
+  clearCart: () => {
+    set({ cart: [], total: 0, subTotal: 0, coupon: null });
   },
 }));

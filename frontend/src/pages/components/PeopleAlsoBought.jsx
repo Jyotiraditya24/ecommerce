@@ -11,8 +11,8 @@ const PeopleAlsoBought = () => {
     const fetchRecommendations = async () => {
       try {
         const res = await axios.get("/product/recommendation");
-        console.log(res);
         setRecommendations(res.data.product);
+        console.log(res.data.product);
       } catch (error) {
         toast.error(
           error.response.data.message ||

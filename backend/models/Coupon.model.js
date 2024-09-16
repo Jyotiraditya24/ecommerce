@@ -18,7 +18,7 @@ const couponSchema = new mongoose.Schema(
       required: true,
     },
     isActive: {
-      type: Date,
+      type: Boolean,
       required: true,
     },
     userId: {

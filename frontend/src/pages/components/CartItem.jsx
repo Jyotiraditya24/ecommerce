@@ -4,7 +4,7 @@ import { useEffect, useState } from "react";
 
 const CartItem = ({ item }) => {
   const { removeFromCart, updateQuantity } = useCartStore();
-  console.log(item)
+
 
   return (
     <div className="rounded-lg border p-4 shadow-sm border-gray-700 bg-white md:p-6">
@@ -12,8 +12,8 @@ const CartItem = ({ item }) => {
         <div className="shrink-0 md:order-1">
           <img
             className="h-20 md:h-32 rounded object-cover"
-            src={item.product.image}
-            alt={item.product.name}
+            src={item.product?.image}
+            alt={item.product?.name}
           />
         </div>
 
@@ -46,16 +46,16 @@ const CartItem = ({ item }) => {
 
           <div className="text-end md:order-4 md:w-32">
             <p className="text-base font-bold text-emerald-400">
-              ${item.product.price}
+              ${item.product?.price}
             </p>
           </div>
         </div>
 
         <div className="w-full min-w-0 flex-1 space-y-4 md:order-2 md:max-w-md">
           <p className="text-base font-medium text-black hover:text-emerald-400 hover:underline">
-            {item.product.name}
+            {item.product?.name}
           </p>
-          <p className="text-sm text-gray-400">{item.product.description}</p>
+          <p className="text-sm text-gray-400">{item.product?.description}</p>
 
           <div className="flex items-center gap-4">
             <button

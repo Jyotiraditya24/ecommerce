@@ -15,7 +15,7 @@ const Cart = () => {
     getCartItems();
   }, []);
 
-  console.log("CART", cart);
+
 
   return (
     <div className="py-8 md:py-16">

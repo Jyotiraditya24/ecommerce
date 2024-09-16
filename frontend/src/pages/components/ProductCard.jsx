@@ -8,8 +8,8 @@ const ProductCard = ({ product }) => {
   const { user } = useUserStore();
   const { addToCart } = useCartStore();
 
-  console.log(product);
   const handleAddToCart = (product) => {
+    console.log(product);
     if (!user) {
       toast.error("Please login to add products to cart", { id: "login" }); // cannnot spam
       return;
