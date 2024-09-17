@@ -87,42 +87,54 @@ export const useUserStore = create((set, get) => ({
   },
 }));
 
+
 let refreshPromise = null;
 
 axios.interceptors.response.use(
-  (response) => response,
+  (response) => response, // Pass the response if successful
   async (error) => {
     const originalRequest = error.config;
+    const userStore = useUserStore.getState();
 
-    // Check if error status is 401 (Unauthorized)
+    // Check if the error status is 401 (Unauthorized)
     if (error.response?.status === 401 && !originalRequest._retry) {
-      originalRequest._retry = true;
+      originalRequest._retry = true; // Avoid infinite retries
 
       try {
-        // If `refreshPromise` exists, wait for it to resolve
+        // Set checkingAuth to true to indicate token refresh is in progress
+        userStore.setState({ checkingAuth: true });
+
+        // If `refreshPromise` exists, await it to prevent multiple refresh calls
         if (refreshPromise) {
           await refreshPromise;
-          return axios(originalRequest); // Retry the original request
+          return axios(originalRequest); // Retry original request after refresh
         }
 
         // Create the refresh token promise and store it
-        refreshPromise = useUserStore.getState().refreshToken();
+        refreshPromise = userStore.refreshToken();
 
-        // Await the refresh token call and clear `refreshPromise`
+        // Await the refresh token call and reset `refreshPromise` after resolving
         await refreshPromise;
         refreshPromise = null;
 
-        // Retry the original request after the token is refreshed
+        // Set checkingAuth to false after token refresh completes
+        userStore.setState({ checkingAuth: false });
+
+        // Retry the original request with the new token
         return axios(originalRequest);
       } catch (refreshError) {
-        // If token refresh fails, log out the user and reject the request
-        useUserStore.getState().logout();
+        // If token refresh fails, log out the user
+        userStore.logout();
         refreshPromise = null; // Clear promise in case of failure
+
+        // Set checkingAuth and user to indicate failed authentication
+        userStore.setState({ checkingAuth: false, user: null });
+
         return Promise.reject(refreshError);
       }
     }
 
-    // If it's not a 401 error, or there's another problem, reject the error
+    // If it's not a 401 error or another error occurred, reject the error
     return Promise.reject(error);
   }
 );
