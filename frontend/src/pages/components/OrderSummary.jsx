@@ -15,7 +15,7 @@ const OrderSummary = () => {
   const formattedSavings = savings.toFixed(2);
 
   const stripeProimse = loadStripe(
-    pk_test_51Pxi9WGHcRtyrhTn4I9Sd5sVtH7sjjAbt9ftJiy2O59xVBXoRKZ0v4GaqJ6N8G6X91TFLiaHqr5bxsa83JQJGwje00tm1jj9jx
+    "pk_test_51Pxi9WGHcRtyrhTn4I9Sd5sVtH7sjjAbt9ftJiy2O59xVBXoRKZ0v4GaqJ6N8G6X91TFLiaHqr5bxsa83JQJGwje00tm1jj9jx"
   );
 
   const handlePayment = async () => {
