@@ -1,4 +1,3 @@
-import mongoose from "mongoose";
 import cloudinary from "../lib/cloudinary.js";
 import { redis } from "../lib/redis.js";
 import Product from "../models/Product.model.js";
