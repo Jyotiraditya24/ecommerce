@@ -3,6 +3,7 @@ import { useProductStore } from "../../stores/useProductStore";
 import { BarChart, PlusCircle, ShoppingBasket } from "lucide-react";
 import CreateProduct from "./CreateProduct";
 import ProductList from "../components/ProductList";
+import AnalyticsTab from "./AnalyticsTab";
 
 const AdminPage = () => {
   const [activeTab, setActiveTab] = useState("create");
@@ -44,6 +45,7 @@ const AdminPage = () => {
 
       {activeTab === "create" && <CreateProduct />}
       {activeTab === "products" && <ProductList />}
+      {activeTab === "analytics" && <AnalyticsTab />}
     </div>
   );
 };

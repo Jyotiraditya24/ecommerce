@@ -93,10 +93,13 @@ const NavBar = () => {
             </div>
 
             {isAdmin === "admin" && (
-              <div className="flex flex-row items-center gap-x-3 border px-4 py-1 rounded-xl">
+              <Link
+                to="/admin/dashboard"
+                className="flex flex-row items-center gap-x-3 border px-4 py-1 rounded-xl bg-emerald-500"
+              >
                 <h1>DashBoard</h1>
                 <LayoutDashboard className="h-6 w-6" />
-              </div>
+              </Link>
             )}
           </div>
         </div>

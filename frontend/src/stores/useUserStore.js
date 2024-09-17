@@ -72,4 +72,58 @@ export const useUserStore = create((set, get) => ({
       );
     }
   },
+  refreshToken: async () => {
+    if (get().checkingAuth) {
+      return;
+    }
+    set({ checkingAuth: true });
+    try {
+      const response = await axios.post("/auth/refresh-token");
+      set({ checkAuth: false });
+    } catch (error) {
+      set({ user: null, checkAuth: false });
+      throw error;
+    }
+  },
 }));
+
+let refreshPromise = null;
+
+axios.interceptors.response.use(
+  (response) => response,
+  async (error) => {
+    const originalRequest = error.config;
+
+    // Check if error status is 401 (Unauthorized)
+    if (error.response?.status === 401 && !originalRequest._retry) {
+      originalRequest._retry = true;
+
+      try {
+        // If `refreshPromise` exists, wait for it to resolve
+        if (refreshPromise) {
+          await refreshPromise;
+          return axios(originalRequest); // Retry the original request
+        }
+
+        // Create the refresh token promise and store it
+        refreshPromise = useUserStore.getState().refreshToken();
+
+        // Await the refresh token call and clear `refreshPromise`
+        await refreshPromise;
+        refreshPromise = null;
+
+        // Retry the original request after the token is refreshed
+        return axios(originalRequest);
+      } catch (refreshError) {
+        // If token refresh fails, log out the user and reject the request
+        useUserStore.getState().logout();
+        refreshPromise = null; // Clear promise in case of failure
+        return Promise.reject(refreshError);
+      }
+    }
+
+    // If it's not a 401 error, or there's another problem, reject the error
+    return Promise.reject(error);
+  }
+);
+
